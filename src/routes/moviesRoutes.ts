@@ -3,6 +3,7 @@ import { MovieService } from '../services/moviesService';
 import { WeatherService } from '../services/weatherService';
 import weatherGenreMap from '../types/WeatherGenreMap';
 import MovieResponse from '../types/MovieResponse';
+import { validateCity, cityValidationRules } from '../middlewares/city_name_validator';
 
 const moviesRoutes = Router();
 const movieService = new MovieService();
@@ -36,8 +37,8 @@ moviesRoutes.get('/genre/:genreID', getMoviesByGenre);
 const getMoviesRecommendation: RequestHandler = async (req, res) => {
     try {
         // Checking if city name is provided
-        const city_name = req.params.city_name as string;
-        if(!city_name){throw new Error("No city name provided.");}
+        const city_name = req.query.city_name as string;
+        if(!city_name){throw new Error("No city_name provided.");}
 
         // Getting weather data
         const weather_data = await weatherService.getWeatherByCity(city_name);
@@ -62,7 +63,7 @@ const getMoviesRecommendation: RequestHandler = async (req, res) => {
     }
     catch(error){res.status(400).json({error: "Failed to get movie data."});};
 };
-moviesRoutes.get('/recommendation/:city_name', getMoviesRecommendation);
+moviesRoutes.get('/recommendation', cityValidationRules, validateCity, getMoviesRecommendation);
 
 // Getting movie data by movie ID
 const getMovieByID: RequestHandler = async (req, res) => {
