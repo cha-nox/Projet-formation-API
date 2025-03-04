@@ -45,8 +45,8 @@ const getMoviesRecommendation: RequestHandler = async (req, res) => {
         // Checking if weather data is valid
         if(!weather_data){throw new Error("Invalid weather data.");};
 
-        // Getting weather description
-        const weather_type = weather_data.weather[0].description;
+        // Getting weather type
+        const weather_type = weather_data.weather[0].main;
 
         // Getting movie genres from depending on weather type
         const weather_genres: any = weatherGenreMap.find(map => map.weather_type === weather_type);

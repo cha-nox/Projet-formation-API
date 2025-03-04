@@ -21,41 +21,35 @@ class WeatherGenreMap{
 
 const weatherGenreMap : WeatherGenreMap[] = [
     {
-        weather_type: 'clear sky',
+        weather_type: 'Clear',
         genres: [MovieGenresMap.ADVENTURE, MovieGenresMap.ACTION, MovieGenresMap.FAMILY],
         mood: 'énergique',
         description: "Par beau temps, on se sent aventureux !"
     },
     {
-        weather_type: 'rain',
+        weather_type: 'Rain',
         genres: [MovieGenresMap.DRAMA, MovieGenresMap.ROMANCE],
         mood: 'mélancolique',
         description: "Temps idéal pour un film émouvant."
     },
     {
-        weather_type: 'moderate rain',
-        genres: [MovieGenresMap.ROMANCE, MovieGenresMap.FAMILY, MovieGenresMap.DOCUMENTARY],
-        mood: 'apaisé',
-        description: "Une légère pluie qui laisse place à une atmosphère paisible."
-    },
-    {
-        weather_type: 'snow',
+        weather_type: 'Snow',
         genres: [MovieGenresMap.FANTASY, MovieGenresMap.ANIMATION],
         mood: 'féérique',
         description: "La neige nous transporte dans un monde magique."
     },
     {
-        weather_type: 'thunderstorm',
+        weather_type: 'Thunderstorm',
         genres: [MovieGenresMap.HORROR, MovieGenresMap.THRILLER],
         mood: 'intense',
         description: "L'orage appelle au suspense."
     },
     {
-        weather_type: 'clouds',
+        weather_type: 'Clouds',
         genres: [MovieGenresMap.DRAMA, MovieGenresMap.FANTASY, MovieGenresMap.MYSTERY],
         mood: 'rêveur',
         description: "Les nuages nous invitent à l'évasion."
-    }
+    },
 ];
 
 export default weatherGenreMap;
