@@ -1,4 +1,4 @@
-import MovieResponse from '../types/MoviesResponse';
+import MovieResponse from '../types/MovieResponse';
 import MovieGenresMap from '../types/MovieGenresMap';
 import axios from 'axios';
 import dotenv from 'dotenv';

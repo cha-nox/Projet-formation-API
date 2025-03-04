@@ -2,7 +2,7 @@ import { Router, RequestHandler } from 'express';
 import { MovieService } from '../services/moviesService';
 import { WeatherService } from '../services/weatherService';
 import weatherGenreMap from '../types/WeatherGenreMap';
-import MovieResponse from '../types/MoviesResponse';
+import MovieResponse from '../types/MovieResponse';
 
 const moviesRoutes = Router();
 const movieService = new MovieService();
