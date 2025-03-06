@@ -4,6 +4,7 @@ import { WeatherService } from '../services/weatherService';
 import weatherGenreMap from '../types/WeatherGenreMap';
 import MovieResponse from '../types/MovieResponse';
 import { validateCity, cityValidationRules } from '../middlewares/city_name_validator';
+import { cacheData, checkCachedRecommandation } from '../middlewares/redis_cache';
 
 const moviesRoutes = Router();
 const movieService = new MovieService();
@@ -58,12 +59,21 @@ const getMoviesRecommendation: RequestHandler = async (req, res) => {
             recommended_movies.push(await movieService.getMoviesByGenreID(weather_genres.genres[i]));
         };
 
+        // Caching recommandation data
+        cacheData('cachedRecommandation_' + city_name, recommended_movies);
+
         // Sending response
         res.json(recommended_movies);
     }
     catch(error){res.status(400).json({error: "Failed to get movie data."});};
 };
-moviesRoutes.get('/recommendation', cityValidationRules, validateCity, getMoviesRecommendation);
+moviesRoutes.get(
+    '/recommendation',
+    cityValidationRules,
+    validateCity,
+    checkCachedRecommandation,
+    getMoviesRecommendation
+);
 
 // Getting movie data by movie ID
 const getMovieByID: RequestHandler = async (req, res) => {

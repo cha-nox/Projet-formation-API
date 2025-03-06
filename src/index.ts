@@ -4,8 +4,12 @@ import cors from 'cors';
 import morgan from 'morgan';
 import weatherRoutes from './routes/weatherRoutes';
 import moviesRoutes from './routes/moviesRoutes';
+import { clearAllCache } from './middlewares/redis_cache';
 
-// Config
+// Clearing cache
+clearAllCache();
+
+// App initialisation
 const port = 2012;
 const app = express()
     // Settings
@@ -14,7 +18,7 @@ const app = express()
     .use(helmet())
     .use(helmet.contentSecurityPolicy())
     .use(helmet.hidePoweredBy())
-    .use(express.urlencoded({ extended: true }))
+    .use(express.urlencoded({extended: true}))
     .use(morgan(":date \: :remote-addr - :method :url | :status | :response-time ms | :res[content-length]"))
 
     // Routes

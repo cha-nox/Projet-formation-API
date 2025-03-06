@@ -1,6 +1,7 @@
 import { Router, RequestHandler } from 'express';
 import { WeatherService } from '../services/weatherService';
 import { validateCity, cityValidationRules } from '../middlewares/city_name_validator';
+import { cacheData, checkCachedCity } from '../middlewares/redis_cache';
 
 const weatherRoutes = Router();
 const weatherService = new WeatherService();
@@ -14,10 +15,15 @@ const getWeather: RequestHandler = async (req, res) => {
 
         // Getting weather data
         const weather_data = await weatherService.getWeatherByCity(city_name);
+
+        // Caching weather data
+        cacheData('cachedWeatherData_' + city_name, weather_data);
+
+        // Results
         res.json(weather_data);
     }
     catch(error){res.status(400).json({error: "Failed to get weather data."});};
 };
-weatherRoutes.get('/', cityValidationRules, validateCity, getWeather);
+weatherRoutes.get('/', cityValidationRules, validateCity, checkCachedCity, getWeather);
 
 export default weatherRoutes; 
