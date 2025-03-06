@@ -21,10 +21,4 @@ const app = express()
 
     // Starting the server
     .listen(port, () => {console.log(`Server listening on port ${port}.`);})
-
-    // Auto-reloading on error
-    .on('error', error => {
-        console.error(error)
-        app.listen(port, () => console.log(`Server listening on port ${port}.`))
-    })
 ;
