@@ -15,6 +15,12 @@ const app = express()
     .use(helmet.hidePoweredBy())
     .use(express.urlencoded({ extended: true }))
 
+    // Requests logging by PM2
+    .use((req, res, next) => {
+        console.log(`${new Date().toISOString()} : ${req.method} ${req.url}`)
+        next()
+    })
+
     // Routes
     .use('/weather', weatherRoutes)
     .use('/movies', moviesRoutes)
