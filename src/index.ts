@@ -1,6 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
+import morgan from 'morgan';
 import weatherRoutes from './routes/weatherRoutes';
 import moviesRoutes from './routes/moviesRoutes';
 
@@ -14,6 +15,7 @@ const app = express()
     .use(helmet.contentSecurityPolicy())
     .use(helmet.hidePoweredBy())
     .use(express.urlencoded({ extended: true }))
+    .use(morgan(":date \: :remote-addr - :method :url | :status | :response-time ms | :res[content-length]"))
 
     // Routes
     .use('/weather', weatherRoutes)
