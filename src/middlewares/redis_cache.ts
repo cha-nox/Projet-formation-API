@@ -3,10 +3,15 @@ import Redis from 'ioredis';
 
 const redis = new Redis();
 
-export const cacheData = async (data_name : string, data : any) => {
-    if(!data_name || !data){throw new Error("No data provided.");};
+export const cacheData = async (req: Request, res: Response, next: NextFunction) => {
+    if(!res.locals.data_name || !res.locals.data_content){throw new Error("No data provided.");};
     try{
-        await redis.set(data_name, JSON.stringify(data), 'EX', 3600 / 2); //Caches for an half hour.
+        await redis.set(
+            res.locals.data_name,
+            JSON.stringify(res.locals.data_content),
+            'EX', 3600 / 2 //Data cache expires in half an hour.
+        );
+        next();
     }
     catch(error){
         console.log(error);
@@ -14,7 +19,7 @@ export const cacheData = async (data_name : string, data : any) => {
     };
 };
 
-export const checkCachedCity = async (req: Request, res: Response, next: NextFunction) => {
+export const checkCachedWeatherData = async (req: Request, res: Response, next: NextFunction) => {
     try{
         const cached_weather_data = await redis.get('cachedWeatherData_' + req.query.city_name);
 
@@ -27,9 +32,9 @@ export const checkCachedCity = async (req: Request, res: Response, next: NextFun
     };
 };
 
-export const checkCachedRecommandation = async (req: Request, res: Response, next: NextFunction) => {
+export const checkCachedRecommendation = async (req: Request, res: Response, next: NextFunction) => {
     try{
-        const cached_weather_data = await redis.get('cachedRecommandation_' + req.query.city_name);
+        const cached_weather_data = await redis.get('cachedRecommendation_' + req.query.city_name);
 
         if(cached_weather_data){res.json(JSON.parse(cached_weather_data));}
         else{next();};
@@ -48,4 +53,4 @@ export const clearAllCache = async () => {
         console.log(error);
         throw new Error("Failed to clear cache.");
     };
-}; 
+};
